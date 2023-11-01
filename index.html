@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sign In</title>
+</head>
+<body>
+    <h2>Sign In</h2>
+    <a href="signup.html">Sign Up</a>
+    <form id="signin-form">
+        <label for="email">Email:</label>
+        <input type="text" id="email" required>
+        <br>
+        <label for="password">Password:</label>
+        <input type="password" id="password" required>
+        <br>
+        <button type="button" onclick="submitForm()">Sign In</button>
+    </form>
+    
+    <script>
+        function submitForm() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const data = { email, password };
+
+            fetch('signin.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message) {
+                    alert(data.message);
+                    // Redirect or perform actions for successful sign-in
+                    window.location.href = 'usersDetails.html';
+                } else if (data.error) {
+                    alert(data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</body>
+</html>
